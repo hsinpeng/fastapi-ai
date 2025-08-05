@@ -16,7 +16,7 @@ if __name__ == "__main__":
     elif args.test:
         load_dotenv("setting/.env.test")
     else:
-        load_dotenv("setting/.env.dev")
+        load_dotenv("setting/.env.dev") # default
 
     app_name: str = "main:app"
     host_name: str = "0.0.0.0"
