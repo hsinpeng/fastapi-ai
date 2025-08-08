@@ -1,3 +1,4 @@
+from typing import Union, Optional
 from datetime import date
 from pydantic import BaseModel
 
@@ -11,10 +12,18 @@ class UserBase(BaseModel):
     name: str
 
 class UserCreate(UserBase):
-    id: int
+    password: str # 新增 password 欄位
+    name: str
+    avatar: Optional[str] = None # 新增 avatar 欄位
     age: int
     email: str
     birthday: date
 
-class UserRead(UserBase):
+class UserCreateResponse(UserBase):
+    name: str
     email: str
+
+class UserRead(UserBase):
+    name: str
+    email: str
+    avatar: Union[str,None] = None

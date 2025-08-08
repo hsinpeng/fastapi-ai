@@ -23,5 +23,5 @@ if __name__ == "__main__":
     port_num: int = int(os.getenv("PORT")) 
     if_reload: bool = parse_boolean(os.getenv("RELOAD"))
     
-    print(f"Uvicron starting:({app_name},{host_name},{port_num},{if_reload})...")
+    print(f"Uvicron starting:(app_name={app_name}, host_name={host_name}, port_num={port_num}, if_reload={if_reload})...")
     uvicorn.run(app_name, host=host_name, port=port_num, reload=if_reload)
