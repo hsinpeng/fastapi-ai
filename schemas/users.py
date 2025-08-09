@@ -12,6 +12,7 @@ class UserBase(BaseModel):
     name: str
 
 class UserCreate(UserBase):
+    id: int
     password: str # 新增 password 欄位
     name: str
     avatar: Optional[str] = None # 新增 avatar 欄位
@@ -24,6 +25,7 @@ class UserCreateResponse(UserBase):
     email: str
 
 class UserRead(UserBase):
+    id: int
     name: str
     email: str
     avatar: Union[str,None] = None

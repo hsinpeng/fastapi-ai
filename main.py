@@ -1,9 +1,11 @@
+import json
 from fastapi import FastAPI, HTTPException
+from fastapi.encoders import jsonable_encoder
+#from fastapi.responses import JSONResponse
 from typing import List
 from setting.config import get_settings
 from schemas import users as UserSchema
 from schemas import items as ItemSchema
-#from database.fake_db import fake_db
 from database.fake_db import get_db
 
 fake_db = get_db()
@@ -30,11 +32,13 @@ def get_infor():
 @app.get("/users", response_model=List[UserSchema.UserRead])
 #@app.get("/users")
 def get_users(qry: str = None):
+    #print(fake_db['users'])
     return fake_db['users']
 
 @app.get("/users/{user_id}" , response_model=UserSchema.UserRead)
 def get_user_by_id(user_id: int, qry: str = None):
     for user in fake_db["users"]:
+        #print(f"-----{user}-----")
         if user["id"] == user_id:
             return user
     raise HTTPException(status_code=404, detail="User not found")
@@ -42,8 +46,9 @@ def get_user_by_id(user_id: int, qry: str = None):
 @app.post("/users" , response_model=UserSchema.UserCreateResponse)
 #@app.post("/users" , response_model=UserSchema.UserCreate)
 def create_users(user: UserSchema.UserCreate):
-    fake_db["users"].append(user)
-    return user
+    json_compatible_user_data = jsonable_encoder(user)
+    fake_db["users"].append(json_compatible_user_data)
+    return json_compatible_user_data #JSONResponse(content=json_compatible_user_data)
 
 @app.delete("/users/{user_id}")
 def delete_users(user_id: int):

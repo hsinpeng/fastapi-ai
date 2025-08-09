@@ -56,7 +56,7 @@ def main():
     try:
         print("Main Test Program")
 
-        opt = 1
+        opt = 0
         match opt:
             case 0:
                 print("----- Pydantic Test 1 -----")
