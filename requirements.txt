@@ -3,6 +3,9 @@
 #langchain-google-vertexai
 #langchain-openai
 #lpillow
+#psycopg[binary]
+psycopg2-binary
+sqlalchemy
 python-dotenv
 fastapi
 uvicorn

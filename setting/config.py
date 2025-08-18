@@ -16,4 +16,7 @@ class Settings():
     port:int = int(os.getenv("PORT"))
     #reload:bool = bool(os.getenv("RELOAD"))
     reload:bool = parse_boolean(os.getenv("RELOAD"))
-    database_url:str = os.getenv("DATABASE_URL")
+    # 多新增 db_type
+    #database_url:str = os.getenv("DATABASE_URL")
+    db_type:str = os.getenv("DB_TYPE").upper()
+    database_url: str = os.getenv(f"{db_type}_DATABASE_URL")
