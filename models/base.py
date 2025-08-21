@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import Annotated , Optional
 
-from sqlalchemy.orm import DeclarativeBase , mapped_column
-from sqlalchemy import String , Integer , DateTime
+from sqlalchemy.orm import DeclarativeBase, mapped_column
+from sqlalchemy import String, Integer, DateTime
 
 class Base(DeclarativeBase):
     pass

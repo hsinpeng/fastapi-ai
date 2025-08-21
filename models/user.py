@@ -3,9 +3,9 @@ from typing import Optional
 import hashlib
 
 from sqlalchemy import Date
-from sqlalchemy.orm import Mapped , mapped_column , relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from models.base import Base , BaseType
+from models.base import Base, BaseType
 
 class User(Base):
     __tablename__ = "User"

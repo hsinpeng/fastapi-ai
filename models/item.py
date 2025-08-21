@@ -1,8 +1,7 @@
 from typing import Optional 
-from sqlalchemy.orm import Mapped , relationship , mapped_column
+from sqlalchemy.orm import Mapped, relationship, mapped_column
 from sqlalchemy import ForeignKey
-
-from models.base import Base , BaseType
+from models.base import Base, BaseType
 
 class Item(Base):
     __tablename__ = "Item"
