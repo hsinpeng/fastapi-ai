@@ -1,32 +1,19 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from fastapi.encoders import jsonable_encoder
 from typing import List
 from schemas import users as UserSchema
-#from database.fake_db import get_db
-#fake_db = get_db()
-from models.user import User as UserModel 
-from database.generic import get_db
-from sqlalchemy import select, update, delete, and_, or_
-from sqlalchemy.orm import Session
-#from setting.config import get_settings
+from api.depends import check_user_id, pagination_parms, test_verify_token
+from crud import users as UserCrud
 
-router = APIRouter(tags=["users"], prefix="/api")
-db_session:Session = get_db() # 
-
-# Depends
-def check_user_id(user_id:int):
-    #db_session:Session = get_db()
-    stmt = select(UserModel.id).where(UserModel.id == user_id)
-    user = db_session.execute(stmt).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user.id
+router = APIRouter(
+    tags=["users"], 
+    prefix="/api",
+    dependencies=[Depends(test_verify_token)]
+)
 
 ### query user by id ###
 @router.get("/users/{user_id}", response_model=UserSchema.UserRead)
 def get_user_by_id(user_id:int=Depends(check_user_id), qry:str=None):
-    stmt = select(UserModel.name,UserModel.id,UserModel.email,UserModel.avatar).where(UserModel.id == user_id)
-    user = db_session.execute(stmt).first()
+    user = UserCrud.get_user_by_id(user_id, qry)
     if user:
         return user    
     raise HTTPException(status_code=404, detail="User not found")
@@ -37,9 +24,13 @@ def get_user_by_id(user_id:int=Depends(check_user_id), qry:str=None):
         response_model=List[UserSchema.UserRead],
         response_description="Get list of user",  
 )
-def get_users(qry:str=None):
-    stmt = select(UserModel.name,UserModel.id,UserModel.email,UserModel.avatar)
-    users = db_session.execute(stmt).all()
+def get_users(page_parms:dict= Depends(pagination_parms)):
+    # users = UserCrud.get_users(
+    #     page_parms["keyword"],
+    #     page_parms["last"],
+    #     page_parms["limit"]
+    # )
+    users = UserCrud.get_users(**page_parms)
     return users
 
 
@@ -51,71 +42,32 @@ def get_users(qry:str=None):
 )
 async def create_user(newUser: UserSchema.UserCreate):
     # check if user already exists
-    # stmt = select(UserModel).where(UserModel.email == newUser.email)
-    stmt = select(UserModel.id).where(or_(UserModel.email == newUser.email, UserModel.id == newUser.id))
-    user = db_session.execute(stmt).first()
+    user = UserCrud.get_user_id_by_email(newUser.email)
     if user:
-        raise HTTPException(status_code=409, detail="User already exists")
-    user = UserModel(
-        #id=newUser.id,
-        name=newUser.name,
-        password=newUser.password,
-        age=newUser.age,
-        birthday=newUser.birthday,
-        email=newUser.email,
-        avatar=newUser.avatar
-    )
-    db_session.add(user)
-    db_session.commit()
-    db_session.refresh(user)
+        raise HTTPException(status_code=409, detail=f"User already exists")
+    # create user
+    user = UserCrud.create_user(newUser)
     return vars(user)
 
 
 ### update user data ###
 @router.put("/users/{user_id}", response_model=UserSchema.UserUpdateResponse)
 def update_users(newUser:UserSchema.UserUpdate, user_id:int=Depends(check_user_id)):
-    #stmt = select(UserModel.id).where(UserModel.id == user_id)
-    #user = db_session.execute(stmt).first()
-    #if not user:
-    #    raise HTTPException(status_code=404, detail="User not found")
-    stmt = update(UserModel).where(UserModel.id == user_id).values(
-        name=newUser.name,
-        password=newUser.password,
-        age=newUser.age,
-        birthday=newUser.birthday,
-        avatar=newUser.avatar
-    )
-    db_session.execute(stmt)
-    db_session.commit()
+    UserCrud.update_users(newUser, user_id)
     return newUser
 
 
 ### update password ###
 @router.put("/users/{user_id}/password", status_code=200)
 def update_user_password(newUser:UserSchema.UserUpdatePassword, user_id:int=Depends(check_user_id)):
-    #stmt = select(UserModel.id).where(UserModel.id == user_id)
-    #user = db_session.execute(stmt).first()
-    #if not user:
-    #    raise HTTPException(status_code=404, detail="User not found")
-    stmt = update(UserModel).where(UserModel.id == user_id).values(
-        password=newUser.password,
-    )
-    db_session.execute(stmt)
-    db_session.commit()
-
+    UserCrud.update_user_password(newUser, user_id)
     return newUser
 
 
 ### delete user ###
 @router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_users(user_id:int=Depends(check_user_id)):
-    #stmt = select(UserModel.id).where(UserModel.id == user_id)
-    #user = db_session.execute(stmt).first()
-    #if not user:
-    #    raise HTTPException(status_code=404, detail="User not found")    
-    stmt = delete(UserModel).where(UserModel.id == user_id)
-    db_session.execute(stmt)
-    db_session.commit()
+    UserCrud.delete_users(user_id)
     return
 
 
