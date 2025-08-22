@@ -9,7 +9,7 @@ from models.item import Item
 settings = get_settings()
 
 engine = create_engine(
-    settings.database_url ,
+    settings.database_url,
     echo=True,
     pool_pre_ping=True
 )
