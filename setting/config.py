@@ -13,6 +13,7 @@ class Settings():
     author:str = "Sheldon Lin"
 
     app_mode: str = os.getenv("APP_MODE")
+    run_mode: str = os.getenv("RUN_MODE")
     port:int = int(os.getenv("PORT"))
     #reload:bool = bool(os.getenv("RELOAD"))
     reload:bool = parse_boolean(os.getenv("RELOAD"))

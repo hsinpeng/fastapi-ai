@@ -5,6 +5,7 @@
 #lpillow
 #psycopg[binary]
 psycopg2-binary
+asyncpg
 sqlalchemy
 python-dotenv
 fastapi
