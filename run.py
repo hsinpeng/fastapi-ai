@@ -11,8 +11,7 @@ if __name__ == "__main__":
     #parser.add_argument("--dev", action="store_true", help="Run the server in development mode.")
 
     parser = argparse.ArgumentParser(description="Run the server in different modes.")
-    # 將 parser.add_argument 的部分，分成不同的 group
-    # 原本的改為 app_mode
+    # 將 parser.add_argument 的部分，分成不同的 group, 原本的改為 app_mode
     app_mode = parser.add_argument_group(title="App Mode", description="Run the server in different modes.")
     app_mode.add_argument("--prod",action="store_true", help="Run the server in production mode.")
     app_mode.add_argument("--test",action="store_true", help="Run the server in test mode.")

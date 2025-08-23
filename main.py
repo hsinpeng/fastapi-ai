@@ -3,8 +3,7 @@ from fastapi import FastAPI
 from setting.config import get_settings
 
 settings = get_settings()
-print(f"DEBUG 1:{settings.run_mode}")
-print(f"DEBUG 2:{settings.database_url}")
+
 if settings.run_mode == "ASYNC":
     from database.generic import init_db, close_db
     from api.infor import router as infor_router
