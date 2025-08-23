@@ -32,7 +32,7 @@ async def get_users(db_session:AsyncSession, keyword:str=None,last:int=0,limit:i
     if keyword:
         stmt = stmt.where(UserModel.name.like(f"%{keyword}%"))
     stmt = stmt.offset(last).limit(limit)
-    result = await db_session.execute(stmt)
+    result = db_session.execute(stmt)
     users = result.all()
 
     return users
