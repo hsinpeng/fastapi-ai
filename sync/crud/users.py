@@ -1,7 +1,7 @@
 import hashlib
 from sqlalchemy.orm import Session 
 from sqlalchemy import select, update, delete
-from database.generic import get_db
+from sync.database.generic import get_db
 from models.user import User as UserModel 
 from schemas import users as UserSchema
 

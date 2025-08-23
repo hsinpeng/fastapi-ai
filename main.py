@@ -12,9 +12,11 @@ if settings.run_mode == "ASYNC":
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         # replacement of @app.on_event("startup")
+        print("ASYNC startup: Initializing resources...")
         await init_db()
         yield
         # replacement of @app.on_event("shutdown")
+        print("ASYNC shutdown: Releasing resources...")
         await close_db()
 elif settings.run_mode == "SYNC":
     from sync.database.generic import init_db, close_db
@@ -24,9 +26,11 @@ elif settings.run_mode == "SYNC":
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         # replacement of @app.on_event("startup")
+        print("SYNC cation startup: Initializing resources...")
         init_db()
         yield
         # replacement of @app.on_event("shutdown")
+        print("SYNC shutdown: Releasing resources...")
         close_db()
 else:
     print(f"Error: Wrong run_mode:{settings.run_mode}!")

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select 
 from typing import Optional
 from models.user import User as UserModel
-from database.generic import get_db
+from sync.database.generic import get_db
 
 def check_user_id(user_id:int):
     db_session:Session = get_db()

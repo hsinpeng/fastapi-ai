@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from schemas import items as ItemSchema
-from database.fake_db import get_db
+from sync.database.fake_db import get_db
 
 fake_db = get_db()
 

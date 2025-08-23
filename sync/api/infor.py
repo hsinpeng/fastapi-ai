@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from setting.config import get_settings
 from sqlalchemy import text
-from database.generic import get_db # 新增 get_db
+from sync.database.generic import get_db # 新增 get_db
 from models.user import User
 from models.item import Item
 

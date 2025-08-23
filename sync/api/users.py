@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import List
 from schemas import users as UserSchema
-from api.depends import check_user_id, pagination_parms, test_verify_token
-from crud import users as UserCrud
+from sync.api.depends import check_user_id, pagination_parms, test_verify_token
+from sync.crud import users as UserCrud
 
 router = APIRouter(
     tags=["users"], 
