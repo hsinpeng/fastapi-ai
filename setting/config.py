@@ -20,4 +20,5 @@ class Settings():
     # 多新增 db_type
     #database_url:str = os.getenv("DATABASE_URL")
     db_type:str = os.getenv("DB_TYPE").upper()
-    database_url: str = os.getenv(f"{db_type}_DATABASE_URL")
+    #database_url: str = os.getenv(f"{db_type}_DATABASE_URL")
+    database_url: str = os.getenv(f"{run_mode}_{db_type}_DATABASE_URL") 
