@@ -6,8 +6,8 @@
 #psycopg[binary]
 psycopg2-binary
 asyncpg
+greenlet
 sqlalchemy
 python-dotenv
 fastapi
 uvicorn
-greenlet

@@ -9,7 +9,7 @@ def get_settings():
     return Settings()
 
 class Settings():
-    app_name:str = "FastAPI for AI Tutorial"
+    app_name:str = "FastAPI for AI Services"
     author:str = "Sheldon Lin"
 
     app_mode: str = os.getenv("APP_MODE")

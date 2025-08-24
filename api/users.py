@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 from schemas import users as UserSchema
-from api.depends import check_user_id, pagination_parms, test_verify_token, get_db
+from database.generic import get_db
+from api.depends import pagination_parms, test_verify_token
 from crud import users as UserCrud
 
 db_depends = Depends(get_db)
@@ -15,8 +15,8 @@ router = APIRouter(
 
 ### query user by id ###
 @router.get("/users/{user_id}", response_model=UserSchema.UserRead)
-async def get_user_by_id(user_id:int=Depends(check_user_id), qry:str=None, db_session=db_depends):
-    user = await UserCrud.get_user_by_id(db_session,user_id, qry)
+async def get_user_by_id(user_id:int, qry:str=None, db_session=db_depends):
+    user = await UserCrud.get_user_by_id(db_session, user_id, qry)
     if user:
         return user    
     raise HTTPException(status_code=404, detail="User not found")
@@ -50,21 +50,33 @@ async def create_user(newUser: UserSchema.UserCreate, db_session=db_depends):
 
 ### update user data ###
 @router.put("/users/{user_id}", response_model=UserSchema.UserUpdateResponse)
-async def update_users(newUser:UserSchema.UserUpdate, user_id:int=Depends(check_user_id), db_session=db_depends):
+async def update_users(newUser:UserSchema.UserUpdate, user_id:int, db_session=db_depends):
+    user = await UserCrud.check_user_by_id(db_session, user_id)
+    if user == None:
+        raise HTTPException(status_code=404, detail="User not found")
+    
     await UserCrud.update_users(db_session, newUser, user_id)
     return newUser
 
 
 ### update password ###
 @router.put("/users/{user_id}/password", status_code=200)
-async def update_user_password(newUser:UserSchema.UserUpdatePassword, user_id:int=Depends(check_user_id), db_session=db_depends):
+async def update_user_password(newUser:UserSchema.UserUpdatePassword, user_id:int, db_session=db_depends):
+    user = await UserCrud.check_user_by_id(db_session, user_id)
+    if user == None:
+        raise HTTPException(status_code=404, detail="User not found")
+    
     await UserCrud.update_user_password(db_session, newUser, user_id)
     return newUser
 
 
 ### delete user ###
 @router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_users(user_id:int=Depends(check_user_id), db_session=db_depends):
+async def delete_users(user_id:int, db_session=db_depends):
+    user = await UserCrud.check_user_by_id(db_session, user_id)
+    if user == None:
+        raise HTTPException(status_code=404, detail="User not found")
+    
     await UserCrud.delete_users(db_session, user_id)
     return
 
