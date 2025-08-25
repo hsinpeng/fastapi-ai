@@ -23,8 +23,12 @@ SessionLocal = async_sessionmaker(engine, expire_on_commit=False, autocommit=Fal
 class Base(DeclarativeBase):
     pass
 
-@asynccontextmanager # 透過 @contextlib.asynccontextmanager 將 async_generator 轉換成 async 的 context manager
-async def get_db():
+# @asynccontextmanager
+# async def get_db():
+#     async with SessionLocal() as db:
+#         async with db.begin():
+#             yield db
+async def get_db() -> AsyncGenerator:
     """Dependency that provides a database session for a single request."""
     async with SessionLocal() as session:
         try:
