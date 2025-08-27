@@ -1,6 +1,5 @@
 from datetime import date
 from typing import Optional 
-import hashlib
 
 from sqlalchemy import Date
 from sqlalchemy.orm import Mapped, mapped_column, relationship

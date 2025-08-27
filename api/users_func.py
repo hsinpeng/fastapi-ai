@@ -3,7 +3,7 @@ from typing import List
 from schemas import users as UserSchema
 from database.generic import get_db
 from crud import users_func as UserCrud
-from api.depends import pagination_parms, test_verify_token
+from api.depends import pagination_parms, verify_apikey
 
 
 db_depends = Depends(get_db)
@@ -11,7 +11,7 @@ db_depends = Depends(get_db)
 router = APIRouter(
     tags=["users"], 
     prefix="/api",
-    dependencies=[Depends(test_verify_token)]
+    dependencies=[Depends(verify_apikey)]
 )
 
 ### query user by id ###

@@ -2,7 +2,6 @@ from contextlib import asynccontextmanager
 from sqlalchemy.ext.asyncio import create_async_engine , async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase 
 from sqlalchemy.schema import CreateTable
-from typing import AsyncGenerator
 
 from setting.config import get_settings
 from models.user import User

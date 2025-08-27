@@ -1,4 +1,3 @@
-import hashlib
 from sqlalchemy import select, update, delete
 from models.user import User as UserModel 
 from schemas import users as UserSchema
