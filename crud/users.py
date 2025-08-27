@@ -1,4 +1,3 @@
-import hashlib
 from sqlalchemy import select, update, delete
 from models.user import User as UserModel
 from schemas import users as UserSchema
@@ -45,7 +44,15 @@ class UserCrud:
             return user
         return None
 
-
+    async def get_user_in_db(self, email:str) -> UserSchema.UserInDB :
+        stmt = select(UserModel.id, UserModel.name, UserModel.password).where(UserModel.email == email)
+        result = await self.db_session.execute(stmt)
+        user = result.first()
+        if user:
+            return user
+            
+        return None
+    
     async def create_user(self, newUser:UserSchema.UserCreate):
         user = UserModel(
             name=newUser.name,

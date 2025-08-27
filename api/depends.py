@@ -9,7 +9,7 @@ def pagination_parms(keyword:Optional[str]=None, last:int=0, limit:int=50):
         "limit":limit
     }
 
-def test_verify_token(verify_header:str = Header()):
+def verify_apikey(verify_header:str = Header()):
     if verify_header != "1234567890":
         raise HTTPException(status_code=403, detail="Forbidden")
     return verify_header

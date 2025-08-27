@@ -5,7 +5,10 @@ from database.generic import get_db # 新增 get_db
 from models.user import User
 from models.item import Item
 
-router = APIRouter(tags=["infor"], prefix="/api")
+router = APIRouter(
+    tags=["infor"],
+    prefix="/api"
+)
 
 @router.get("/")
 def hello_world():

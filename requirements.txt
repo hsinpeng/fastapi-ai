@@ -8,6 +8,10 @@ psycopg2-binary
 asyncpg
 greenlet
 sqlalchemy
+passlib
+bcrypt
+python-multipart
+python-jose
 python-dotenv
 fastapi
 uvicorn

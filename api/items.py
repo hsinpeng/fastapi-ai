@@ -1,10 +1,15 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from schemas import items as ItemSchema
+from api.depends import verify_apikey
 from database.fake_db import get_db
 
 fake_db = get_db()
 
-router = APIRouter(tags=["items"], prefix="/api")
+router = APIRouter(
+    tags=["items"], 
+    prefix="/api",
+    dependencies=[Depends(verify_apikey)]
+)
 
 @router.get("/items/{item_id}" , response_model=ItemSchema.ItemRead)
 def get_item_by_id(item_id : int , qry : str = None ):

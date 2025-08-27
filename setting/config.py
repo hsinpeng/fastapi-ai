@@ -17,8 +17,14 @@ class Settings():
     port:int = int(os.getenv("PORT"))
     #reload:bool = bool(os.getenv("RELOAD"))
     reload:bool = parse_boolean(os.getenv("RELOAD"))
-    # 多新增 db_type
+    # 新增 db_type
     #database_url:str = os.getenv("DATABASE_URL")
     db_type:str = os.getenv("DB_TYPE").upper()
     #database_url: str = os.getenv(f"{db_type}_DATABASE_URL")
     database_url: str = os.getenv(f"{run_mode}_{db_type}_DATABASE_URL") 
+
+    # 新增 JWT
+    access_token_secret:str = os.getenv("ACCESS_TOKEN_SECRET")
+    access_token_expire_minutes:int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+    refresh_token_secret:str = os.getenv("REFRESH_TOKEN_SECRET")
+    refresh_token_expire_minutes:int = int(os.getenv("REFRESH_TOKEN_EXPIRE_MINUTES"))

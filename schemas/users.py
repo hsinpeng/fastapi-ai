@@ -11,6 +11,17 @@ from pydantic import BaseModel, Field
 class UserBase(BaseModel):
     name: str
 
+class UserInDB(BaseModel):
+    id: int
+    name: str
+    password: str
+    
+class UserRead(UserBase):
+    id: int
+    name: str
+    email: str
+    avatar: Union[str,None] = None
+
 class UserCreate(UserBase):
     id: int
     password: str # 新增 password 欄位
@@ -23,12 +34,6 @@ class UserCreate(UserBase):
 class UserCreateResponse(UserBase):
     name: str
     email: str
-
-class UserRead(UserBase):
-    id: int
-    name: str
-    email: str
-    avatar: Union[str,None] = None
 
 class UserUpdate(UserBase):
     password: Optional[str] = Field(min_length=6)
