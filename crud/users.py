@@ -1,6 +1,7 @@
 from sqlalchemy import select, update, delete
 from models.user import User as UserModel
 from schemas import users as UserSchema
+from auth.passwd import get_password_hash
 from database.generic import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -56,7 +57,7 @@ class UserCrud:
     async def create_user(self, newUser:UserSchema.UserCreate):
         user = UserModel(
             name=newUser.name,
-            password=newUser.password,
+            password=get_password_hash(newUser.password),#newUser.password,
             age=newUser.age,
             birthday=newUser.birthday,
             email=newUser.email,
@@ -71,7 +72,7 @@ class UserCrud:
     async def update_users(self, newUser:UserSchema.UserUpdate, user_id:int):
         stmt = update(UserModel).where(UserModel.id == user_id).values(
             name=newUser.name,
-            password=newUser.password,
+            #password=newUser.password,
             age=newUser.age,
             birthday=newUser.birthday,
             avatar=newUser.avatar
@@ -83,7 +84,7 @@ class UserCrud:
 
     async def update_user_password(self, newUser:UserSchema.UserUpdatePassword, user_id:int):
         stmt = update(UserModel).where(UserModel.id == user_id).values(
-            password=newUser.password,
+            password=get_password_hash(newUser.password),#newUser.password,
         )
         await self.db_session.execute(stmt)
         await self.db_session.commit()

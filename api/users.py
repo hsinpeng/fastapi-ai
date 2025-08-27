@@ -4,7 +4,6 @@ from typing import List
 
 from api.depends import pagination_parms, verify_apikey
 from auth.jwt import verify_access_token
-from auth.passwd import get_password_hash
 from crud.users import UserCrud, get_user_crud_manager
 from schemas import users as UserSchema
 
@@ -48,7 +47,7 @@ async def create_user(newUser: UserSchema.UserCreate,
     if user:
         raise HTTPException(status_code=409, detail=f"User already exists")
     # create user
-    newUser.password = get_password_hash(newUser.password) # hash password
+    #newUser.password = get_password_hash(newUser.password) # hash password
     user = await userCrud.create_user(newUser)
     return vars(user)
 
@@ -68,7 +67,7 @@ async def update_users(newUser:UserSchema.UserUpdate,
     if user == None:
         raise HTTPException(status_code=404, detail="User not found")
     
-    newUser.password = get_password_hash(newUser.password) # hash password
+    #newUser.password = get_password_hash(newUser.password) # hash password
     await userCrud.update_users(newUser, user_id)
     return newUser
 
@@ -88,7 +87,7 @@ async def update_user_password(newUser:UserSchema.UserUpdatePassword,
     if user == None:
         raise HTTPException(status_code=404, detail="User not found")
     
-    newUser.password = get_password_hash(newUser.password) # hash password
+    #newUser.password = get_password_hash(newUser.password) # hash password
     await userCrud.update_user_password(newUser, user_id)
     return newUser
 
