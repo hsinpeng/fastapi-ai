@@ -14,7 +14,10 @@ class Settings():
 
     app_mode: str = os.getenv("APP_MODE")
     run_mode: str = os.getenv("RUN_MODE")
-    port:int = int(os.getenv("PORT"))
+    tmp = os.getenv("PORT")
+    if tmp is not None:
+        #port:int = int(os.getenv("PORT"))
+        port:int = int(tmp)
     #reload:bool = bool(os.getenv("RELOAD"))
     reload:bool = parse_boolean(os.getenv("RELOAD"))
     # 新增 db_type
@@ -25,6 +28,12 @@ class Settings():
 
     # 新增 JWT
     access_token_secret:str = os.getenv("ACCESS_TOKEN_SECRET")
-    access_token_expire_minutes:int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+    tmp = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+    if tmp is not None:
+        #access_token_expire_minutes:int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+        access_token_expire_minutes:int = int(tmp)
     refresh_token_secret:str = os.getenv("REFRESH_TOKEN_SECRET")
-    refresh_token_expire_minutes:int = int(os.getenv("REFRESH_TOKEN_EXPIRE_MINUTES"))
+    tmp = os.getenv("REFRESH_TOKEN_EXPIRE_MINUTES")
+    if tmp is not None:
+        #refresh_token_expire_minutes:int = int(os.getenv("REFRESH_TOKEN_EXPIRE_MINUTES"))
+        refresh_token_expire_minutes:int = int(tmp)

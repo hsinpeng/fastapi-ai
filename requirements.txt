@@ -15,3 +15,7 @@ python-jose
 python-dotenv
 fastapi
 uvicorn
+pytest
+pytest-asyncio
+httpx
+pytest-sugar

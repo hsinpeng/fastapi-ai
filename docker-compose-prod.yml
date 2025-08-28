@@ -1,0 +1,52 @@
+version: '1.0'
+
+services:
+  postgresql_db:
+    image: postgres:15.1
+    expose:
+      - 5432
+    env_file:
+      - db.postgresql.env
+    restart: always
+    volumes:
+      - ./db_volumes/postgresql:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "fastapi_tutorial"]
+      interval: 2s
+      timeout: 5s
+      retries: 3
+
+  redis_db:
+    image: redis:7.2.1
+    expose:
+      - 6379
+    restart: always
+    volumes:
+      - ./db_volumes/redis:/data/
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 5s
+      retries: 3
+
+  backend:
+    build: ./backend
+    ports:
+      - 8000:8003
+    # volumes:
+    #   - ./backend/:/usr/backend/
+    command: python3 run.py --prod
+    env_file:
+      - ./backend/.env/.prod.env
+    restart: always
+    depends_on:
+      redis_db:
+        condition: service_healthy
+      postgresql_db:
+        condition: service_healthy
+      # mysql_db:
+      #   condition: service_healthy
+
+networks:
+  default: 
+    name: fastapi_tutorial_network
