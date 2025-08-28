@@ -36,10 +36,22 @@ podman-compose down
 
 ### Run redis by podman
 ```
-podman run --name fastapi_redis_dev -p 6379:6379 -d redis --requirepass "fastapi_redis_password"
+podman run --name redis -p 6379:6379 -d redis --requirepass "redis_password"
 ```
 
 ### Run redis-insight by podman
 ```
 podman run --name redisinsight -p 5540:5540 -d redis/redisinsight
+```
+
+### Connecting redis in python using sync approach
+```
+cd redis
+uv run python sync_redis_test.py -o [run_option]
+```
+
+### Connecting redis in python using async approach
+```
+cd redis
+uv run python async_redis_test.py -o [run_option]
 ```
